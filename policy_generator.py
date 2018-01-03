@@ -5,7 +5,7 @@ import os
 attr_file = open('attributes.json', 'r')
 attributes = json.load(attr_file)
 
-operations = ["AND", "OR"]
+operations = ["and", "or"]
 num_attributes = 40
 key_size = num_attributes/2
 num_runs = 10
@@ -63,7 +63,7 @@ def get_satisfying_attributes(root, key_size):
     if not (root.lson is None and root.rson is None):
         left_attributes = get_satisfying_attributes(root.lson, key_size)
         right_attributes = get_satisfying_attributes(root.rson, key_size)
-        if root.value == "OR":
+        if root.value == "or":
             return random.choice([left_attributes, right_attributes])
         else:
             return left_attributes + right_attributes
@@ -100,7 +100,6 @@ for policy_size in policy_sizes:
             for j in range(num_users):
                 while True:
                     policy, key = generate_random_policy(policy_size, key_size, attributes)
-                    # print(policy)
                     if len(key) <= key_size:
                         missing = key_size - len(key)
                         
@@ -110,8 +109,6 @@ for policy_size in policy_sizes:
                                 key.append(attribute)
                                 missing -= 1
                         break
-
-
                 users.append({
                     'policy': policy,
                     'key': key
