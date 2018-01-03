@@ -83,7 +83,7 @@ if not os.path.exists('policies'):
     os.mkdir('policies')
 
 policy_sizes = [8, 16, 32, 64]
-key_sizes = [8, 16, 32, 64]
+key_sizes = [4, 8, 16, 32, 64]
 
 for policy_size in policy_sizes:
     size_dir = os.path.join('policies','length_{}'.format(policy_size))
