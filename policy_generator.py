@@ -57,7 +57,7 @@ def get_policy_string(root):
     if not (root.lson is None and root.rson is None):
         return '({} {} {})'.format(get_policy_string(root.lson), root.value, get_policy_string(root.rson))
     else:
-        return '"{}"'.format(root.value)
+        return '{}'.format(root.value)
 
 def get_satisfying_attributes(root, key_size):
     if not (root.lson is None and root.rson is None):
