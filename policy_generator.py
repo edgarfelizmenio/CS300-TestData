@@ -111,7 +111,7 @@ for policy_size in policy_sizes:
                         break
                 users.append({
                     'policy': policy,
-                    'key': key
+                    'attributes': key
                 })
 
             run_file = open(os.path.join(key_dir, 'run {}.json'.format(i)), "w")
