@@ -140,7 +140,7 @@ for policy_size in policy_sizes:
             if hosts[i] not in os.listdir(key_dir):
                 run_file_dir = os.mkdir(os.path.join(key_dir, hosts[i]))
 
-            run_file = open(os.path.join(key_dir, hosts[i], 'run {} {}.json'.format(policy_size, key_size)), "w")
+            run_file = open(os.path.join(key_dir, hosts[i], 'run {} {} {}.json'.format(num_users,policy_size, key_size)), "w")
             json.dump(users, run_file)
             run_file.close()
             print(run_file.name)
