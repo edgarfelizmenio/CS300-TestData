@@ -2,14 +2,29 @@ import json
 import random
 import os
 
+def to_attribute(x):
+    chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+    result = ''
+    while True:
+        print(x % len(chars))
+        result = chars[x % len(chars)] + result
+        x = x / len(chars)
+        x = int(x)
+        if x == 0:
+            break
+    return result
+
 attr_file = open('attributes.json', 'r')
-attributes = json.load(attr_file)
+attributes = [to_attribute(x) for x in range(256)]
+# attributes = list(attributes)
+# print(sorted(attributes))
+print(attributes)
+print(len(attributes))
 
 operations = ["and", "or"]
 num_attributes = 40
 key_size = num_attributes/2
-num_runs = 10
-num_users = 20
+num_users = 2000
 
 class TreeNode(object):
     def __init__(self):
@@ -32,7 +47,7 @@ def generate_tree(num_attributes):
         if root is None:
             root = TreeNode()
         else:
-            alpha = root
+            alpha = root    
             while alpha.lson is not None or alpha.rson is not None:
                 choice = random.randint(0,1)
                 if choice == 0:
@@ -78,19 +93,27 @@ def get_satisfying_attributes(root, key_size):
 #     random.shuffle(key)
 #     print(key)
 
+policies_dir = 'policies_tl1'
 
-if not os.path.exists('policies'):
-    os.mkdir('policies')
+if not os.path.exists(policies_dir):
+    os.mkdir(policies_dir)
 
-policy_sizes = [8, 16, 32, 64]
-key_sizes = [4, 8, 16, 32, 64]
+policy_sizes = [10, 20, 30, 40, 50]
+# key_sizes = [4, 8, 16, 32, 64]
+
+hosts = [
+    "10.147.72.{}".format(x) for x in range(18,38)
+]
+
+num_runs = len(hosts)
+print(num_runs)
 
 for policy_size in policy_sizes:
-    size_dir = os.path.join('policies','length_{}'.format(policy_size))
+    size_dir = os.path.join(policies_dir,'length_{}'.format(policy_size))
     if not os.path.exists(size_dir):
         os.mkdir(size_dir)
 
-    for key_size in key_sizes:
+    for key_size in [policy_size]:
         key_dir = os.path.join(size_dir, '{} attributes in key'.format(key_size))
         if not os.path.exists(key_dir):
             os.mkdir(key_dir)
@@ -114,9 +137,10 @@ for policy_size in policy_sizes:
                     'attributes': key
                 })
 
-            run_file = open(os.path.join(key_dir, 'run {}.json'.format(i)), "w")
+            if hosts[i] not in os.listdir(key_dir):
+                run_file_dir = os.mkdir(os.path.join(key_dir, hosts[i]))
+
+            run_file = open(os.path.join(key_dir, hosts[i], 'run {} {}.json'.format(policy_size, key_size)), "w")
             json.dump(users, run_file)
             run_file.close()
             print(run_file.name)
-
-    
