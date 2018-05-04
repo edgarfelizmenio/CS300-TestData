@@ -24,7 +24,7 @@ print(len(attributes))
 operations = ["and", "or"]
 num_attributes = 40
 key_size = num_attributes/2
-num_users = 2000
+num_users = 50
 
 class TreeNode(object):
     def __init__(self):
